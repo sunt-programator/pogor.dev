@@ -1,14 +1,15 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import Fuse from "fuse.js";
 import { useEffect, useRef, useState, useMemo, type FormEvent } from "react";
 import Card from "@components/Card";
 import type { CollectionEntry } from "astro:content";
 
-export type SearchItem = {
+export interface SearchItem {
   title: string;
   description: string;
   data: CollectionEntry<"blog">["data"];
   slug: string;
-};
+}
 
 interface Props {
   searchList: SearchItem[];
@@ -50,7 +51,10 @@ export default function SearchBar({ searchList }: Props) {
 
     // put focus cursor at the end of the string
     setTimeout(function () {
-      inputRef.current!.selectionStart = inputRef.current!.selectionEnd =
+      if (!inputRef.current) {
+        return;
+      }
+      inputRef.current.selectionStart = inputRef.current.selectionEnd =
         searchStr?.length || 0;
     }, 50);
   }, []);
@@ -58,7 +62,7 @@ export default function SearchBar({ searchList }: Props) {
   useEffect(() => {
     // Add search result only if
     // input value is more than one character
-    let inputResult = inputVal.length > 1 ? fuse.search(inputVal) : [];
+    const inputResult = inputVal.length > 1 ? fuse.search(inputVal) : [];
     setSearchResults(inputResult);
 
     // Update search string in URL

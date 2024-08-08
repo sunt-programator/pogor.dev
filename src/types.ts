@@ -1,6 +1,6 @@
 import type socialIcons from "@assets/socialIcons";
 
-export type Site = {
+export interface Site {
   website: string;
   author: string;
   profile: string;
@@ -11,7 +11,7 @@ export type Site = {
   postPerIndex: number;
   postPerPage: number;
   scheduledPostMargin: number;
-};
+}
 
 export type SocialObjects = {
   name: keyof typeof socialIcons;
